@@ -1,0 +1,1979 @@
+{
+  "version" : "59.0",
+  "nodes" : {
+    "LOAD_DATASET0" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "LastViewedDate", "LastReferencedDate", "Scope3CrbnFtprntId", "Ch4EmissionsInKg", "Co2EmissionsInKg", "DistanceUnit", "Distance", "Scope3EmssnSrcId", "EndDate", "FreightHaulingMode", "N2oEmissionsInKg", "CarbonFootprintReportDate", "Scope3Category", "Scope3EmissionsInTco2e", "StartDate", "SuplScope3Emissions", "WeightUnit", "Weight", "FrgtHaulingEmssnFctrId", "SupplierId", "Emissions_Source_Name__c", "Account_Name__c", "Audit_Status__c", "Audit_Flag__c", "Business_Region__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "FrgtHaulingEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "FrgtHaulingEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA3" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_Freight",
+          "label" : "Activity",
+          "formulaExpression" : "Scope3Category",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA12" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA13" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope3UpstreamEmissions",
+          "label" : "Scope 3 Upstream Emissions",
+          "formulaExpression" : "IF(Activity_Freight = 'Upstream Transportation and Distribution', Scope3EmissionsInTco2e, 0)",
+          "precision" : 10,
+          "scale" : 5,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA13" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA3" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope3DownstreamEmissions",
+          "label" : "Scope 3 Downstream Emissions",
+          "formulaExpression" : "IF(Activity_Freight = 'Downstream Transportation and Distribution', Scope3EmissionsInTco2e, 0)",
+          "precision" : 10,
+          "scale" : 5,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA16" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA12" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "RecordId",
+          "label" : "Record Id",
+          "formulaExpression" : "Id",
+          "precision" : 18,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA17" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA16" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "FootprintId",
+          "label" : "Footprint Id",
+          "formulaExpression" : "Scope3CrbnFtprntId",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA19" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA17" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Automated Ingestion'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND0" : {
+      "action" : "appendV2",
+      "sources" : [ "FORMULA19", "FORMULA20" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "Ch4EmissionsInKg",
+          "bottom" : "Ch4EmissionsInKg"
+        }, {
+          "top" : "Co2EmissionsInKg",
+          "bottom" : "Co2EmissionsInKg"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "StnryAssetEnvrSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "N2oEmissionsInKg",
+          "bottom" : "N2oEmissionsInKg"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "CarbonFootprintReportDate"
+        }, {
+          "top" : "Scope3Category",
+          "bottom" : "Scope3GhgCategory"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SuplScope3Emissions",
+          "bottom" : "Total_Supplemental_Scope_3_Emissions__c"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_Stationary"
+        }, {
+          "top" : "Scope3DownstreamEmissions",
+          "bottom" : "Scope3DnstrmEmissionsInTco2e"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3UpstrmEmissionsInTco2e"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "StnryAssetCrbnFtprntId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        }, {
+          "bottom" : "Scope1EmissionsInTco2e"
+        }, {
+          "bottom" : "Scope2LocBasedEmssnInTco2e"
+        }, {
+          "bottom" : "Scope2MktBasedEmssnInTco2e"
+        } ]
+      }
+    },
+    "LOAD_DATASET8" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "LastViewedDate", "LastReferencedDate", "StnryAssetCrbnFtprntId", "AllocatedRenewableEnergyInKwh", "CarbonFootprintReportDate", "DataGapFillingMethodName", "ElectricityEmissionFactorsId", "OtherEmssnFctrId", "StnryAssetEnvrSrcId", "EndDate", "FinalEnergyConsumption", "FuelConsumptionInGigajoule", "FuelConsumptionInKwh", "FuelConsumptionUnit", "FuelConsumption", "FuelType", "IsCompanyOwnedAsset", "LocBasedElectrFrBiomassInKwh", "LocBasedElectrFromCoalInKwh", "LocBasedElectrFromGasInKwh", "LocBasedElectrFromHydroInKwh", "LocBasedElectrFrNuclearInKwh", "LocBasedElectrFromOilInKwh", "LocBasedElectrFrOthrFuelInKwh", "LocBasedElectrFromSolarInKwh", "LocBasedElectrFromWindInKwh", "LocBsdElectrFrNonRenewablesKwh", "LocBsdElectrOthrFossilFuelKwh", "LocBsdElectrFrGeothermalInKwh", "MktBasedElectrFrBiomassInKwh", "MktBasedElectrFromCoalInKwh", "MktBasedElectrFromGasInKwh", "MktBasedElectrFromHydroInKwh", "MktBasedElectrFrNuclearInKwh", "MktBasedElectrFromOilInKwh", "MktBasedElectrOthrFuelInKwh", "MktBasedElectrFromSolarInKwh", "MktBasedElectrFromWindInKwh", "MktBsdElectrFrNonRenewablesKwh", "MktBsdElectrOthrFossilFuelKwh", "MktBsdElectrFrGeothermalInKwh", "NormalizedMoElectrCnsmpInKwh", "OccupiedFloorAreaInSqft", "OccupiedFloorAreaUnit", "OccupiedFloorArea", "ProposedEnergyConsumption", "RefrigerantEmssnFctrId", "RenewableEnergyType", "PowerUsageEffectiveness", "Scope1EmissionsInTco2e", "Scope2LocBasedEmssnInTco2e", "Scope2MktBasedEmssnInTco2e", "StartDate", "SuplScope1Emissions", "SuplScope2LocationBasedEmssn", "SuplScope2MarketBasedEmssn", "IsSystemGeneratedRecord", "TotRnwlEnrgyExclHydroInKwh", "TotalFloorAreaInSqft", "TotalFloorAreaUnit", "TotalFloorArea", "TotalRenewableEnergyInKwh", "SupplierId", "SuplScope3DnstrmEmissions", "SuplScope3UpstrmEmissions", "Scope3DnstrmEmissionsInTco2e", "Scope3UpstrmEmissionsInTco2e", "TotalFuelConsumptionInKwh", "IsRecordLocked", "IsPueMonthlyRange", "Ch4EmissionsInKg", "Co2EmissionsInKg", "N2oEmissionsInKg", "FuelTypeRefId", "FuelConsumptionUnitRefId", "Scope3GhgCategory", "Total_Supplemental_Scope_3_Emissions__c", "Emissions_Source_Name__c", "Account_Name__c", "Audit_Status__c", "Audit_Flag__c", "Business_Region__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "StnryAssetEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "StnryAssetEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "APPEND1" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND0", "FORMULA21" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "DistanceUnit",
+          "bottom" : "DistanceUnit"
+        }, {
+          "top" : "Distance",
+          "bottom" : "Distance"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "Scope3EmssnSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "CarbonFootprintReportDate"
+        }, {
+          "top" : "Scope3Category",
+          "bottom" : "Scope3GhgCategory"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SuplScope3Emissions",
+          "bottom" : "SuplScope3Emissions"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_GroundTravel"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3EmissionsInTco2e"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "Scope3CrbnFtprntId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        } ]
+      }
+    },
+    "LOAD_DATASET9" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "Scope3CrbnFtprntId", "CostCenter", "DistanceUnit", "Distance", "Scope3EmssnSrcId", "EndDate", "GroundTravelEmssnFctrId", "Scope3EmissionsInTco2e", "StartDate", "SuplScope3Emissions", "TravelerName", "TripCost", "PcmtEmssnFctrSetItemId", "ExpenseType", "SupplierId", "CarbonFootprintReportDate", "Scope3GhgCategory", "Emissions_Source_Name__c", "Account_Name__c", "Audit_Status__c", "Audit_Flag__c", "Business_Region__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "GroundTravelEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "GroundTravelEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA4" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET8" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_Stationary",
+          "label" : "Activity",
+          "formulaExpression" : "'Stationary Energy Use'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA20" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA4" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "case\n\twhen DataGapFillingMethodName = 'DAILY_AVERAGE_CURRENT_YEAR'\n\tthen 'Current Year Daily Average'\n\twhen DataGapFillingMethodName = 'MANUAL'\n\tthen 'Facility Manager Entry'\n    when DataGapFillingMethodName = 'DAILY_AVERAGE_LAST_YEAR'\n\tthen 'Previous Year Daily Average'\n    when DataGapFillingMethodName = 'REGIONAL_BENCHMARK'\n\tthen 'BEI Benchmark'\n    when DataGapFillingMethodName = 'BUILDING_BENCHMARK'\n\tthen 'BEI Benchmark'\n\telse\n\t'Utility Bill Aggregator'\nend",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA5" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET9" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_GroundTravel",
+          "label" : "Activity",
+          "formulaExpression" : "IF(Scope3GhgCategory = 'EmployeeCommuting', 'Employee Commuting', IF(Scope3GhgCategory = 'BusinessTravel', 'Business Travel (Ground)', 'Unknown'))",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA21" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA5" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Employee Commute Survey'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND2" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND1", "FORMULA22" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "Scope3EmssnSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "CarbonFootprintReportDate"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SuplScope3Emissions",
+          "bottom" : "SuplScope3Emissions"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_HotelStays"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3EmissionsInTco2e"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "Scope3CrbnFtprntId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        } ]
+      }
+    },
+    "LOAD_DATASET10" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "Scope3CrbnFtprntId", "CostCenter", "EmissionFctrKgCo2eRoomPerNight", "Scope3EmssnSrcId", "EndDate", "HotelCity", "HotelCountry", "HotelName", "RoomCount", "RoomType", "HotelStayEmssnFctrId", "Scope3EmissionsInTco2e", "StartDate", "StayNightsCount", "SuplScope3Emissions", "TravelerName", "SupplierId", "CarbonFootprintReportDate", "Account_Name__c", "Audit_Status__c", "Audit_Flag__c", "Business_Region__c", "Emissions_Source_Name__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "HotelStayEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "HotelStayEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA6" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_HotelStays",
+          "label" : "Hotel Stay Energy Use ID Formula",
+          "formulaExpression" : "'Business Travel (Hotel Stays)'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA22" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA6" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Business Travel System'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND3" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND2", "FORMULA23" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "Ch4EmissionsInKg",
+          "bottom" : "Ch4EmissionsInKg"
+        }, {
+          "top" : "Co2EmissionsInKg",
+          "bottom" : "Co2EmissionsInKg"
+        }, {
+          "top" : "DistanceUnit",
+          "bottom" : "DistanceUnit"
+        }, {
+          "top" : "Distance",
+          "bottom" : "Distance"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "Scope3EmssnSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "N2oEmissionsInKg",
+          "bottom" : "N2oEmissionsInKg"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "CarbonFootprintReportDate"
+        }, {
+          "top" : "Scope3Category",
+          "bottom" : "Scope3GhgCategory"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SuplScope3Emissions",
+          "bottom" : "SuplScope3Emissions"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_RentalCars"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3EmissionsInTco2e"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "Scope3CrbnFtprntId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        } ]
+      }
+    },
+    "LOAD_DATASET11" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "Scope3CrbnFtprntId", "CostCenter", "DistanceUnit", "Distance", "Scope3EmssnSrcId", "EndDate", "FuelEfficiencyInLkm", "FuelEfficiencyInMpg", "RentalCarCompanyCode", "RentalCarCompanyName", "RentalCarEmssnFctrId", "Scope3EmissionsInTco2e", "StartDate", "SuplScope3Emissions", "TotalFuelConsumptionInGal", "TotalFuelConsumptionInLiter", "TravelerName", "Scope3GhgCategory", "VendorProvidedEmissionsInTco2e", "Ch4EmissionsInKg", "Co2EmissionsInKg", "N2oEmissionsInKg", "SupplierId", "CarbonFootprintReportDate", "FuelType", "Account_Name__c", "Business_Region__c", "Audit_Status__c", "Audit_Flag__c", "Emissions_Source_Name__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "RentalCarEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "RentalCarEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA7" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET11" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_RentalCars",
+          "label" : "Activity",
+          "formulaExpression" : "'Business Travel (Rental Cars)'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA23" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA7" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Business Travel System'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND4" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND3", "FORMULA24" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "Ch4EmissionsInKg",
+          "bottom" : "Ch4EmissionsInKg"
+        }, {
+          "top" : "Co2EmissionsInKg",
+          "bottom" : "Co2EmissionsInKg"
+        }, {
+          "top" : "DistanceUnit",
+          "bottom" : "DistanceUnit"
+        }, {
+          "top" : "Distance",
+          "bottom" : "Distance"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "VehicleAssetEmssnSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "N2oEmissionsInKg",
+          "bottom" : "N2oEmissionsInKg"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "CarbonFootprintReportDate"
+        }, {
+          "top" : "Scope3Category",
+          "bottom" : "Scope3GhgCategory"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_Vehicles"
+        }, {
+          "top" : "Scope3DownstreamEmissions",
+          "bottom" : "Scope3DnstrmEmissionsInTco2e"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3UpstrmEmissionsInTco2e"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "VehicleAssetCrbnFtprntId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        }, {
+          "top" : "Scope1EmissionsInTco2e",
+          "bottom" : "Scope1EmissionsInTco2e"
+        }, {
+          "top" : "Scope2LocBasedEmssnInTco2e",
+          "bottom" : "Scope2LocBasedEmssnInTco2e"
+        }, {
+          "top" : "Scope2MktBasedEmssnInTco2e",
+          "bottom" : "Scope2MktBasedEmssnInTco2e"
+        } ]
+      }
+    },
+    "LOAD_DATASET12" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "VehicleAssetCrbnFtprntId", "AircraftFuelEconomyUnit", "AircraftFuelEconomy", "AircraftType", "CarbonFootprintReportDate", "Ch4EmissionsInKg", "Co2EmissionsInKg", "CostCenter", "OtherEmssnFctrId", "VehicleAssetEmssnSrcId", "EndDate", "FlightDate", "FlightDurationInHours", "FuelConsumptionUnit", "FuelConsumption", "FuelEfficiencyInMpg", "FuelEfficiencyUnit", "FuelEfficiency", "FuelType", "IsCompanyOwnedAsset", "N2oEmissionsInKg", "Scope1EmissionsInTco2e", "Scope2LocBasedEmssnInTco2e", "Scope2MktBasedEmssnInTco2e", "StartDate", "SuplScope1Emissions", "SuplScope2LocationBasedEmssn", "SuplScope2MarketBasedEmssn", "DistanceUnit", "Distance", "TotalFuelConsumptionInGal", "TotalFuelConsumptionInLiter", "AircraftFuelEconomyInGph", "Scope3DnstrmEmissionsInTco2e", "Scope3UpstrmEmissionsInTco2e", "SupplierId", "SuplScope3DnstrmEmissions", "SuplScope3UpstrmEmissions", "Scope3GhgCategory", "Account_Name__c", "Business_Region__c", "Audit_Status__c", "Audit_Flag__c", "Emissions_Source_Name__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "VehicleAssetEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "VehicleAssetEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA8" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET12" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_Vehicles",
+          "label" : "Activity",
+          "formulaExpression" : "'Vehicle Energy Use'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA24" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA8" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Fleet Management System'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND5" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND4", "FORMULA25" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "Scope3EmssnSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SuplScope3Emissions",
+          "bottom" : "SuplScope1EmissionsInTco2e"
+        }, {
+          "top" : "WeightUnit",
+          "bottom" : "DisposedWasteQuantityUnit"
+        }, {
+          "top" : "Weight",
+          "bottom" : "DisposedWasteQuantity"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_Waste"
+        }, {
+          "top" : "Scope3DownstreamEmissions",
+          "bottom" : "Scp3DnstrmEndLifeSoldPrdct"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scp3UpstrmWstGenInOper"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "StandardWasteFootprintId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        }, {
+          "top" : "Scope1EmissionsInTco2e",
+          "bottom" : "Scope1EmissionsInTco2e"
+        } ]
+      }
+    },
+    "LOAD_DATASET13" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "Scope3CrbnFtprntId", "DisposalSiteType", "DisposalType", "DisposedWasteQuantityUnit", "DisposedWasteQuantity", "DisposedWasteQuantityinTonnes", "EndDate", "IsHazardous", "Scope3EmssnSrcId", "Scp3DnstrmEndLifeSoldPrdct", "Scp3UpstrmWstGenInOper", "StartDate", "SuplScp3DnstrmEndLifeSoldPrdct", "SuplScp3UpstrmWstGenInOper", "SupplierId", "WasteFootprintId", "WasteType", "WstDispoEmssnFctrId", "StnryAssetEnvrSrcId", "Description", "Scope1EmissionsInTco2e", "SuplScope1EmissionsInTco2e", "Account_Name__c", "Business_Region__c", "Audit_Status__c", "Audit_Flag__c", "Emissions_Source_Name__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "GeneratedWaste",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "GeneratedWaste"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA9" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET13" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_Waste",
+          "label" : "Activity",
+          "formulaExpression" : "'Waste'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA18" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA9" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "StandardWasteFootprintId",
+          "label" : "Standard Waste Footprint Id",
+          "formulaExpression" : "IF(WasteFootprintId != '', WasteFootprintId, Scope3CrbnFtprntId)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA25" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA18" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Facility Manager Entry'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND6" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND5", "FORMULA26" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "OwnerId",
+          "bottom" : "OwnerId"
+        }, {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "DistanceUnit",
+          "bottom" : "SegmentDistanceUnit"
+        }, {
+          "top" : "Distance",
+          "bottom" : "SegmentDistanceInMiles"
+        }, {
+          "top" : "Scope3EmssnSrcId",
+          "bottom" : "Scope3EmssnSrcId"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "EndDate"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "CarbonFootprintReportDate"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "StartDate"
+        }, {
+          "top" : "SuplScope3Emissions",
+          "bottom" : "SuplScope3Emissions"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_AirTravel"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3EmissionsInTco2e"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "FootprintId",
+          "bottom" : "Scope3CrbnFtprntId"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        } ]
+      }
+    },
+    "LOAD_DATASET14" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "OwnerId", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "Scope3CrbnFtprntId", "Ch4PassengerKmInKgCo2e", "Ch4PassengerMileInKgCo2e", "Co2PassengerKmInKg", "Co2PassengerMileInKg", "CostCenter", "Scope3EmssnSrcId", "EndDate", "HaulLength", "N2oPassengerKmInKgCo2e", "N2oPassengerMileInKgCo2e", "AirTravelEmssnFctrId", "Scope3EmissionsInTco2e", "SegmentDistanceInMiles", "SegmentDistanceUnit", "SegmentDistance", "StartDate", "SuplScope3Emissions", "TravelerName", "SourceCountry", "VendorProvidedEmissionsInTco2e", "SupplierId", "CarbonFootprintReportDate", "DestinationCountry", "TravelerBaseCountry", "SourceCity", "DestinationCity", "TravelerBaseCity", "Emissions_Source_Name__c", "Account_Name__c", "Business_Region__c", "Audit_Status__c", "Audit_Flag__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "AirTravelEnrgyUse",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "AirTravelEnrgyUse"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA10" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET14" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_AirTravel",
+          "label" : "Activity",
+          "formulaExpression" : "'Business Travel (Air Travel)'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA26" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Business Travel System'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "APPEND7" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND6", "FORMULA27" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Name",
+          "bottom" : "Name"
+        }, {
+          "top" : "CreatedDate",
+          "bottom" : "CreatedDate"
+        }, {
+          "top" : "CreatedById",
+          "bottom" : "CreatedById"
+        }, {
+          "top" : "LastModifiedDate",
+          "bottom" : "LastModifiedDate"
+        }, {
+          "top" : "LastModifiedById",
+          "bottom" : "LastModifiedById"
+        }, {
+          "top" : "LastViewedDate",
+          "bottom" : "LastViewedDate"
+        }, {
+          "top" : "LastReferencedDate",
+          "bottom" : "LastReferencedDate"
+        }, {
+          "top" : "EndDate",
+          "bottom" : "SpentDate"
+        }, {
+          "top" : "CarbonFootprintReportDate",
+          "bottom" : "ReportDate"
+        }, {
+          "top" : "Scope3Category",
+          "bottom" : "Scope3GhgCategory"
+        }, {
+          "top" : "StartDate",
+          "bottom" : "SpentDate"
+        }, {
+          "top" : "SupplierId",
+          "bottom" : "SupplierId"
+        }, {
+          "top" : "Emissions_Source_Name__c",
+          "bottom" : "Emissions_Source_Name__c"
+        }, {
+          "top" : "Account_Name__c",
+          "bottom" : "Account_Name__c"
+        }, {
+          "top" : "Audit_Status__c",
+          "bottom" : "Audit_Status__c"
+        }, {
+          "top" : "Audit_Flag__c",
+          "bottom" : "Audit_Flag__c"
+        }, {
+          "top" : "Business_Region__c",
+          "bottom" : "Business_Region__c"
+        }, {
+          "top" : "Activity_Freight",
+          "bottom" : "Activity_Procurement"
+        }, {
+          "top" : "Scope3DownstreamEmissions",
+          "bottom" : "Scope3DownstreamEmissionsProcurement"
+        }, {
+          "top" : "Scope3UpstreamEmissions",
+          "bottom" : "Scope3UpstreamEmissionsProcurement"
+        }, {
+          "top" : "RecordId",
+          "bottom" : "Id"
+        }, {
+          "top" : "Data_Source",
+          "bottom" : "Data_Source"
+        } ]
+      }
+    },
+    "LOAD_DATASET15" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Name", "CreatedDate", "CreatedById", "LastModifiedDate", "LastModifiedById", "SystemModstamp", "LastViewedDate", "LastReferencedDate", "ProcurementSummaryId", "CalculatedScope3EmssnInTco2e", "ReportDate", "PcmtEmssnFctrSetItemId", "Scope3EmissionsInTco2", "Scope3GhgCategory", "Scp3UncatgEmissions", "SpendingCategory1", "SpendingCategory2", "SpendingCategory3", "SpentAmount", "SpentDate", "SupplierId", "TotScpe3EmssnPerMillionSpent", "VendorPrvdScope3EmssnInTco2e", "SustainabilityScorecardId", "FinalScorecardEmissions", "Scope3EmissionsCalculationType", "PurchaseQuantity", "UnitOfMeasure", "ProductEmissionsFactorId", "Scp3QtyBsdEmssnInTco2e", "ProductId", "Emissions_Source_Name__c", "Account_Name__c", "Business_Region__c", "Audit_Status__c", "Audit_Flag__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Scope3PcmtItem",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Scope3PcmtItem"
+        },
+        "sampleDetails" : {
+          "type" : "TopN",
+          "sortBy" : [ ]
+        }
+      }
+    },
+    "FORMULA11" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET15" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Activity_Procurement",
+          "label" : "Activity",
+          "formulaExpression" : "IF(Scope3GhgCategory = 'Business Travel', 'Business Travel (Expenses)', Scope3GhgCategory)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA14" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA11" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope3UpstreamEmissionsProcurement",
+          "label" : "Scope 3 Upstream Emissions",
+          "formulaExpression" : "case\n    when Scope3GhgCategory = 'Purchased Goods and Services'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Capital Goods'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Fuel and Energy-Related Activities'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Upstream Transportation and Distribution'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Waste Generated in Operations'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Business Travel'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Employee Commuting'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Upstream Leased Assets'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Downstream Transportation and Distribution'\n    then 0\n    when Scope3GhgCategory = 'Processing of Sold Products'\n    then 0\n    when Scope3GhgCategory = 'Use of Sold Products'\n    then 0\n    when Scope3GhgCategory = 'End-of-Life Treatment of Sold Products'\n    then 0\n    when Scope3GhgCategory = 'Downstream Leased Assets'\n    then 0\n    when Scope3GhgCategory = 'Franchises'\n    then 0\n    when Scope3GhgCategory = 'Investments'\n    then 0\n    else 0\nend",
+          "precision" : 10,
+          "scale" : 5,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA15" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA14" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope3DownstreamEmissionsProcurement",
+          "label" : "Scope 3 Downstream Emissions",
+          "formulaExpression" : "case\n    when Scope3GhgCategory = 'Purchased Goods and Services'\n    then 0\n    when Scope3GhgCategory = 'Capital Goods'\n    then 0\n    when Scope3GhgCategory = 'Fuel and Energy-Related Activities'\n    then 0\n    when Scope3GhgCategory = 'Upstream Transportation and Distribution'\n    then 0\n    when Scope3GhgCategory = 'Waste Generated in Operations'\n    then 0\n    when Scope3GhgCategory = 'Business Travel'\n    then 0\n    when Scope3GhgCategory = 'Employee Commuting'\n    then 0\n    when Scope3GhgCategory = 'Upstream Leased Assets'\n    then 0\n    when Scope3GhgCategory = 'Downstream Transportation and Distribution'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Processing of Sold Products'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Use of Sold Products'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'End-of-Life Treatment of Sold Products'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Downstream Leased Assets'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Franchises'\n    then Scope3EmissionsInTco2\n    when Scope3GhgCategory = 'Investments'\n    then Scope3EmissionsInTco2\n    else 0\nend",
+          "precision" : 10,
+          "scale" : 5,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA27" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA15" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Data_Source",
+          "label" : "Data Source",
+          "formulaExpression" : "'Procurement Expense System'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "OUTPUT0" : {
+      "action" : "save",
+      "sources" : [ "FILL4" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Carbon Ledger Dataset",
+          "name" : "CarbonLedgerDataset",
+          "folderName" : "Carbon_Ledger"
+        },
+        "measuresToCurrencies" : [ ]
+      }
+    },
+    "FILL0" : {
+      "action" : "formula",
+      "sources" : [ "APPEND7" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Scope1EmissionsInTco2e_fill",
+          "newProperties" : {
+            "name" : "Scope1EmissionsInTco2e"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Scope1EmissionsInTco2e" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope1EmissionsInTco2e_fill",
+          "label" : "Scope 1 Emissions (tCO2e)",
+          "formulaExpression" : "coalesce(Scope1EmissionsInTco2e, null, 0)",
+          "precision" : 18,
+          "scale" : 0
+        } ]
+      }
+    },
+    "FILL1" : {
+      "action" : "formula",
+      "sources" : [ "FILL0" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Scope2LocBasedEmssnInTco2e_fill",
+          "newProperties" : {
+            "name" : "Scope2LocBasedEmssnInTco2e"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Scope2LocBasedEmssnInTco2e" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope2LocBasedEmssnInTco2e_fill",
+          "label" : "Scope 2 Location-Based Emissions (tCO2e)",
+          "formulaExpression" : "coalesce(Scope2LocBasedEmssnInTco2e, null, 0)",
+          "precision" : 18,
+          "scale" : 0
+        } ]
+      }
+    },
+    "FILL2" : {
+      "action" : "formula",
+      "sources" : [ "FILL1" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Scope2MktBasedEmssnInTco2e_fill",
+          "newProperties" : {
+            "name" : "Scope2MktBasedEmssnInTco2e"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Scope2MktBasedEmssnInTco2e" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope2MktBasedEmssnInTco2e_fill",
+          "label" : "Scope 2 Market-Based Emissions (tCO2e)",
+          "formulaExpression" : "coalesce(Scope2MktBasedEmssnInTco2e, null, 0)",
+          "precision" : 18,
+          "scale" : 0
+        } ]
+      }
+    },
+    "FILL3" : {
+      "action" : "formula",
+      "sources" : [ "FILL2" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Scope3UpstreamEmissions_fill",
+          "newProperties" : {
+            "name" : "Scope3UpstreamEmissions"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Scope3UpstreamEmissions" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope3UpstreamEmissions_fill",
+          "label" : "Scope 3 Upstream Emissions",
+          "formulaExpression" : "coalesce(Scope3UpstreamEmissions, null, 0)",
+          "precision" : 18,
+          "scale" : 0
+        } ]
+      }
+    },
+    "FILL4" : {
+      "action" : "formula",
+      "sources" : [ "FILL3" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Scope3DownstreamEmissions_fill",
+          "newProperties" : {
+            "name" : "Scope3DownstreamEmissions"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Scope3DownstreamEmissions" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Scope3DownstreamEmissions_fill",
+          "label" : "Scope 3 Downstream Emissions",
+          "formulaExpression" : "coalesce(Scope3DownstreamEmissions, null, 0)",
+          "precision" : 18,
+          "scale" : 0
+        } ]
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "label" : "FrgtHaulingEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM0" : {
+        "label" : "Transform Freight Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 252,
+        "graph" : {
+          "FORMULA3" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA12" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Scope 3 Upstream Emissions"
+          },
+          "FORMULA13" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Scope 3 Downstream Emissions"
+          },
+          "FORMULA16" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Record Id"
+          },
+          "FORMULA17" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Footprint Id"
+          },
+          "FORMULA19" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA13",
+          "target" : "FORMULA12"
+        }, {
+          "source" : "FORMULA3",
+          "target" : "FORMULA13"
+        }, {
+          "source" : "FORMULA12",
+          "target" : "FORMULA16"
+        }, {
+          "source" : "FORMULA16",
+          "target" : "FORMULA17"
+        }, {
+          "source" : "FORMULA17",
+          "target" : "FORMULA19"
+        } ]
+      },
+      "APPEND0" : {
+        "label" : "Append Stationary Energy Uses",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 392
+      },
+      "LOAD_DATASET8" : {
+        "label" : "StnryAssetEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 252,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "APPEND1" : {
+        "label" : "Append Ground Travel",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 532
+      },
+      "LOAD_DATASET9" : {
+        "label" : "GroundTravelEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 391.9,
+        "left" : 112.1,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM1" : {
+        "label" : "Transform Stationary Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 252,
+        "left" : 252,
+        "graph" : {
+          "FORMULA4" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA20" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA4",
+          "target" : "FORMULA20"
+        } ]
+      },
+      "TRANSFORM2" : {
+        "label" : "Transform Ground Travel Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 252,
+        "graph" : {
+          "FORMULA5" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA21" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA5",
+          "target" : "FORMULA21"
+        } ]
+      },
+      "APPEND2" : {
+        "label" : "Append Hotel Stays",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 672
+      },
+      "LOAD_DATASET10" : {
+        "label" : "HotelStayEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 532,
+        "left" : 112.1,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM3" : {
+        "label" : "Transform Hotel Stay Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 532,
+        "left" : 252.10000000000002,
+        "graph" : {
+          "FORMULA6" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA22" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA6",
+          "target" : "FORMULA22"
+        } ]
+      },
+      "APPEND3" : {
+        "label" : "Append Rental Cars",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 812
+      },
+      "LOAD_DATASET11" : {
+        "label" : "RentalCarEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 672,
+        "left" : 112.1,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM4" : {
+        "label" : "Transform Rental Car Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 672,
+        "left" : 252.10000000000002,
+        "graph" : {
+          "FORMULA7" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA23" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA7",
+          "target" : "FORMULA23"
+        } ]
+      },
+      "APPEND4" : {
+        "label" : "Append Vehicle Energy Uses",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 952
+      },
+      "LOAD_DATASET12" : {
+        "label" : "VehicleAssetEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 812,
+        "left" : 112.1,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM5" : {
+        "label" : "Transform Vehicle Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 812,
+        "left" : 252.10000000000002,
+        "graph" : {
+          "FORMULA8" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA24" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA8",
+          "target" : "FORMULA24"
+        } ]
+      },
+      "APPEND5" : {
+        "label" : "Append Waste",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 1092
+      },
+      "LOAD_DATASET13" : {
+        "label" : "GeneratedWaste",
+        "type" : "LOAD_DATASET",
+        "top" : 952,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM6" : {
+        "label" : "Transform Waste Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 952,
+        "left" : 252.2,
+        "graph" : {
+          "FORMULA9" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA18" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Waste Footprint Id"
+          },
+          "FORMULA25" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA9",
+          "target" : "FORMULA18"
+        }, {
+          "source" : "FORMULA18",
+          "target" : "FORMULA25"
+        } ]
+      },
+      "APPEND6" : {
+        "label" : "Append Air Travel",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 1232
+      },
+      "LOAD_DATASET14" : {
+        "label" : "AirTravelEnrgyUse",
+        "type" : "LOAD_DATASET",
+        "top" : 1092,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM7" : {
+        "label" : "Transform Air Travel Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 1092,
+        "left" : 252.39999999999998,
+        "graph" : {
+          "FORMULA10" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA26" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA10",
+          "target" : "FORMULA26"
+        } ]
+      },
+      "APPEND7" : {
+        "label" : "Append Procurement",
+        "description" : "",
+        "type" : "APPEND",
+        "top" : 112,
+        "left" : 1372
+      },
+      "LOAD_DATASET15" : {
+        "label" : "Scope3PcmtItem",
+        "type" : "LOAD_DATASET",
+        "top" : 1232,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM8" : {
+        "label" : "Transform Procurement Records",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 1232,
+        "left" : 252,
+        "graph" : {
+          "FORMULA11" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Activity"
+          },
+          "FORMULA14" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Scope 3 Upstream Emissions"
+          },
+          "FORMULA15" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Scope 3 Downstream Emissions"
+          },
+          "FORMULA27" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            },
+            "label" : "Data Source"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA11",
+          "target" : "FORMULA14"
+        }, {
+          "source" : "FORMULA14",
+          "target" : "FORMULA15"
+        }, {
+          "source" : "FORMULA15",
+          "target" : "FORMULA27"
+        } ]
+      },
+      "OUTPUT0" : {
+        "label" : "Carbon Ledger Dataset Output",
+        "description" : "",
+        "type" : "OUTPUT",
+        "top" : 112,
+        "left" : 1652
+      },
+      "TRANSFORM9" : {
+        "label" : "Fill Null Values",
+        "description" : "",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 1512,
+        "graph" : {
+          "FILL0" : {
+            "parameters" : {
+              "type" : "FILL_UI"
+            },
+            "label" : "Replace Nulls for Scope 1"
+          },
+          "FILL1" : {
+            "parameters" : {
+              "type" : "FILL_UI"
+            },
+            "label" : "Replace Nulls for Scope 2 LB"
+          },
+          "FILL2" : {
+            "parameters" : {
+              "type" : "FILL_UI"
+            },
+            "label" : "Replace Nulls for Scope 2 MB"
+          },
+          "FILL3" : {
+            "parameters" : {
+              "type" : "FILL_UI"
+            },
+            "label" : "Replace Nulls for Upstream Scope 3"
+          },
+          "FILL4" : {
+            "parameters" : {
+              "type" : "FILL_UI"
+            },
+            "label" : "Replace Nulls for Downstream Scope 3"
+          }
+        },
+        "connectors" : [ {
+          "source" : "FILL0",
+          "target" : "FILL1"
+        }, {
+          "source" : "FILL1",
+          "target" : "FILL2"
+        }, {
+          "source" : "FILL2",
+          "target" : "FILL3"
+        }, {
+          "source" : "FILL3",
+          "target" : "FILL4"
+        } ]
+      }
+    },
+    "connectors" : [ {
+      "source" : "LOAD_DATASET0",
+      "target" : "TRANSFORM0"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "APPEND0"
+    }, {
+      "source" : "TRANSFORM1",
+      "target" : "APPEND0"
+    }, {
+      "source" : "APPEND0",
+      "target" : "APPEND1"
+    }, {
+      "source" : "TRANSFORM2",
+      "target" : "APPEND1"
+    }, {
+      "source" : "LOAD_DATASET8",
+      "target" : "TRANSFORM1"
+    }, {
+      "source" : "LOAD_DATASET9",
+      "target" : "TRANSFORM2"
+    }, {
+      "source" : "APPEND1",
+      "target" : "APPEND2"
+    }, {
+      "source" : "TRANSFORM3",
+      "target" : "APPEND2"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM3"
+    }, {
+      "source" : "APPEND2",
+      "target" : "APPEND3"
+    }, {
+      "source" : "TRANSFORM4",
+      "target" : "APPEND3"
+    }, {
+      "source" : "LOAD_DATASET11",
+      "target" : "TRANSFORM4"
+    }, {
+      "source" : "APPEND3",
+      "target" : "APPEND4"
+    }, {
+      "source" : "TRANSFORM5",
+      "target" : "APPEND4"
+    }, {
+      "source" : "LOAD_DATASET12",
+      "target" : "TRANSFORM5"
+    }, {
+      "source" : "APPEND4",
+      "target" : "APPEND5"
+    }, {
+      "source" : "TRANSFORM6",
+      "target" : "APPEND5"
+    }, {
+      "source" : "LOAD_DATASET13",
+      "target" : "TRANSFORM6"
+    }, {
+      "source" : "APPEND5",
+      "target" : "APPEND6"
+    }, {
+      "source" : "TRANSFORM7",
+      "target" : "APPEND6"
+    }, {
+      "source" : "LOAD_DATASET14",
+      "target" : "TRANSFORM7"
+    }, {
+      "source" : "APPEND6",
+      "target" : "APPEND7"
+    }, {
+      "source" : "TRANSFORM8",
+      "target" : "APPEND7"
+    }, {
+      "source" : "LOAD_DATASET15",
+      "target" : "TRANSFORM8"
+    }, {
+      "source" : "TRANSFORM9",
+      "target" : "OUTPUT0"
+    }, {
+      "source" : "APPEND7",
+      "target" : "TRANSFORM9"
+    } ],
+    "hiddenColumns" : [ ]
+  },
+  "runMode" : "full"
+}

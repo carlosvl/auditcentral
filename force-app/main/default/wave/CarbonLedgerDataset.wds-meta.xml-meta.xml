@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WaveDataset xmlns="http://soap.sforce.com/2006/04/metadata">
+    <application>Carbon_Ledger</application>
+    <description>Created from the Carbon Ledger recipe.</description>
+    <masterLabel>Carbon Ledger Dataset</masterLabel>
+    <type>default</type>
+</WaveDataset>

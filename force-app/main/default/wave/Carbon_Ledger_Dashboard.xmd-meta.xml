@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WaveXmd xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <dataset xsi:nil="true"/>
+    <dimensions>
+        <field>lens_8.RecordId</field>
+        <isDerived>false</isDerived>
+        <linkTemplateEnabled>false</linkTemplateEnabled>
+        <salesforceActionsEnabled>false</salesforceActionsEnabled>
+        <sortIndex>0</sortIndex>
+    </dimensions>
+    <dimensions>
+        <field>lens_8.Name</field>
+        <isDerived>false</isDerived>
+        <label>Record Name</label>
+        <linkTemplateEnabled>true</linkTemplateEnabled>
+        <recordDisplayFields>
+            <recordDisplayField>Name</recordDisplayField>
+            <sortIndex>0</sortIndex>
+        </recordDisplayFields>
+        <recordIdField>RecordId</recordIdField>
+        <salesforceActionsEnabled>true</salesforceActionsEnabled>
+        <sortIndex>1</sortIndex>
+    </dimensions>
+    <dimensions>
+        <field>lens_8.Audit_Flag__c</field>
+        <isDerived>false</isDerived>
+        <label>Flag</label>
+        <sortIndex>2</sortIndex>
+    </dimensions>
+    <dimensions>
+        <field>lens_8.Audit_Status__c</field>
+        <isDerived>false</isDerived>
+        <label>Status</label>
+        <sortIndex>3</sortIndex>
+    </dimensions>
+    <measures>
+        <field>lens_2_12.E</field>
+        <formatCustomFormat>[&quot;#,###&quot;,1]</formatCustomFormat>
+        <isDerived>false</isDerived>
+        <label>Total Emissions (tCO2e)</label>
+        <sortIndex>0</sortIndex>
+    </measures>
+    <measures>
+        <field>lens_1.TotalEmissions</field>
+        <formatCustomFormat>[&quot;#,###&quot;,1]</formatCustomFormat>
+        <isDerived>false</isDerived>
+        <label>Total Emissions (tCO2e)</label>
+        <sortIndex>1</sortIndex>
+    </measures>
+    <measures>
+        <field>lens_3.E</field>
+        <isDerived>false</isDerived>
+        <label>Total Emissions (tCO2e)</label>
+        <sortIndex>2</sortIndex>
+    </measures>
+    <measures>
+        <field>lens_2_10.E</field>
+        <formatCustomFormat>[&quot;#,###&quot;,1]</formatCustomFormat>
+        <isDerived>false</isDerived>
+        <label>Total Emissions (tCO2e)</label>
+        <sortIndex>3</sortIndex>
+    </measures>
+    <type>Asset</type>
+    <waveVisualization>Carbon_Ledger_Dashboard</waveVisualization>
+</WaveXmd>
